@@ -120,7 +120,7 @@ public class Import extends HttpServlet {
             BufferedReader br = new BufferedReader(new InputStreamReader(inpStream,StandardCharsets.UTF_8));
             String inputLine;
             List<String> importFile = new ArrayList<>();
-            Integer lineCnt = 0;
+            int lineCnt = 0;
             while ((inputLine = br.readLine()) != null) {
                 lineCnt++;
                 // Empty or comment?
@@ -129,7 +129,7 @@ public class Import extends HttpServlet {
                 }
                 if (inputLine.startsWith("-")) {
                     //DO nothing.
-                } else if (!inputLine.matches("/.+=.+=.*")) {
+                } else if (!inputLine.matches("/.+=.+=.*") && !inputLine.matches("/=.+=.*")) {
                     throw new IOException("Invalid format at line " + lineCnt + ": " + inputLine);
                 }
 

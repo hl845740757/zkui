@@ -180,8 +180,11 @@ public enum ZooKeeperUtil {
 
                 String path = line.substring(0, firstEq);
                 if ("/".equals(path)) {
+                    // 会在下面加回来
                     path = "";
                 }
+                // 数据由两个等号分割为三段 第一个等号替换为 / 就是路径 第二个等号分隔以后就是 name 和 value
+
                 String name = line.substring(firstEq + 1, secEq);
                 String value = readExternalizedNodeValue(line.substring(secEq + 1));
                 String fullNodePath = path + "/" + name;
