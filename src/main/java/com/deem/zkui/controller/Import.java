@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -95,7 +96,7 @@ public class Import extends HttpServlet {
 
                 } else {
                     uploadFileName = item.getName();
-                    sbFile.append(item.getString());
+                    sbFile.append(item.getString(StandardCharsets.UTF_8.toString()));
                 }
             }
 
@@ -112,11 +113,11 @@ public class Import extends HttpServlet {
             } else {
                 logger.debug("Upload file Processing " + uploadFileName);
                 dao.insertHistory((String) request.getSession().getAttribute("authName"), request.getRemoteAddr(), "Uploading File: " + uploadFileName + "<br/>" + "Overwrite: " + scmOverwrite);
-                inpStream = new ByteArrayInputStream(sbFile.toString().getBytes());
+                inpStream = new ByteArrayInputStream(sbFile.toString().getBytes(StandardCharsets.UTF_8));
             }
 
             // open the stream and put it into BufferedReader
-            BufferedReader br = new BufferedReader(new InputStreamReader(inpStream));
+            BufferedReader br = new BufferedReader(new InputStreamReader(inpStream,StandardCharsets.UTF_8));
             String inputLine;
             List<String> importFile = new ArrayList<>();
             Integer lineCnt = 0;

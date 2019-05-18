@@ -20,19 +20,19 @@ package com.deem.zkui.utils;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import org.apache.zookeeper.ZooKeeper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import org.apache.zookeeper.ZooKeeper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public enum ServletUtil {
 
@@ -75,6 +75,7 @@ public enum ServletUtil {
         try {
             logger.error("Error :" + error);
             Map<String, Object> templateParam = new HashMap<>();
+            response.setCharacterEncoding("UTF-8");
             response.setContentType("text/html;charset=UTF-8");
             Template template = null;
             Configuration config = new Configuration();
@@ -123,7 +124,7 @@ public enum ServletUtil {
     }
 
     public String externalizeNodeValue(byte[] value) {
-        return value == null ? "" : new String(value).replaceAll("\\n", "\\\\n").replaceAll("\\r", "");
+        return value == null ? "" : new String(value, StandardCharsets.UTF_8).replaceAll("\\n", "\\\\n").replaceAll("\\r", "");
         // We might want to BASE64 encode it
     }
 

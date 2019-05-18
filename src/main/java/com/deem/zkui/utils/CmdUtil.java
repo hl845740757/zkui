@@ -22,6 +22,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +34,9 @@ public enum CmdUtil {
 
     public String executeCmd(String cmd, String zkServer, String zkPort) throws IOException {
         StringBuilder sb;
-        try (Socket s = new Socket(zkServer, Integer.parseInt(zkPort)); PrintWriter out = new PrintWriter(s.getOutputStream(), true); BufferedReader reader = new BufferedReader(new InputStreamReader(s.getInputStream()))) {
+        try (Socket s = new Socket(zkServer, Integer.parseInt(zkPort));
+             PrintWriter out = new PrintWriter(s.getOutputStream(), true);
+             BufferedReader reader = new BufferedReader(new InputStreamReader(s.getInputStream(), StandardCharsets.UTF_8))) {
             out.println(cmd);
             String line = reader.readLine();
             sb = new StringBuilder();
